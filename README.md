@@ -9,7 +9,9 @@ SQLiteC++
 [![Coverity](https://img.shields.io/coverity/scan/14508.svg)](https://scan.coverity.com/projects/srombauts-sqlitecpp "Coverity Scan Build Status")
 [![Join the chat at https://gitter.im/SRombauts/SQLiteCpp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SRombauts/SQLiteCpp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SQLiteC++ (SQLiteCpp) is a smart and easy to use C++ SQLite3 wrapper.
+SQLiteC++ (SQLiteCpp) is a smart and easy to use C++ SQLite3 wrapper. Several changes in this project:
+1. Add wchar_t/wstring support. (Windows only)
+2. Remove non-ascii strings from the source code.
 
 Keywords: sqlite, sqlite3, C, library, wrapper C++
 
