@@ -126,6 +126,21 @@ void Statement::bind(const int aIndex, const char* apValue)
     check(ret);
 }
 
+// Bind a string value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bind(const int aIndex, const std::wstring& aValue)
+{
+    const int ret = sqlite3_bind_text16(mStmtPtr, aIndex, aValue.c_str(),
+        static_cast<int>(aValue.size() * sizeof(wchar_t)), SQLITE_TRANSIENT);
+    check(ret);
+}
+
+// Bind a text value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bind(const int aIndex, const wchar_t* apValue)
+{
+    const int ret = sqlite3_bind_text16(mStmtPtr, aIndex, apValue, -1, SQLITE_TRANSIENT);
+    check(ret);
+}
+
 // Bind a binary blob value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
 void Statement::bind(const int aIndex, const void* apValue, const int aSize)
 {
@@ -145,6 +160,21 @@ void Statement::bindNoCopy(const int aIndex, const std::string& aValue)
 void Statement::bindNoCopy(const int aIndex, const char* apValue)
 {
     const int ret = sqlite3_bind_text(mStmtPtr, aIndex, apValue, -1, SQLITE_STATIC);
+    check(ret);
+}
+
+// Bind a string value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bindNoCopy(const int aIndex, const std::wstring& aValue)
+{
+    const int ret = sqlite3_bind_text16(mStmtPtr, aIndex, aValue.c_str(),
+        static_cast<int>(aValue.size() * sizeof(wchar_t)), SQLITE_STATIC);
+    check(ret);
+}
+
+// Bind a text value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bindNoCopy(const int aIndex, const wchar_t* apValue)
+{
+    const int ret = sqlite3_bind_text16(mStmtPtr, aIndex, apValue, -1, SQLITE_STATIC);
     check(ret);
 }
 
@@ -212,6 +242,24 @@ void Statement::bind(const char* apName, const char* apValue)
     check(ret);
 }
 
+
+// Bind a string value to a parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bind(const char* apName, const std::wstring& aValue)
+{
+    const int index = sqlite3_bind_parameter_index(mStmtPtr, apName);
+    const int ret = sqlite3_bind_text16(mStmtPtr, index, aValue.c_str(),
+        static_cast<int>(aValue.size() * sizeof(wchar_t)), SQLITE_TRANSIENT);
+    check(ret);
+}
+
+// Bind a text value to a parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bind(const char* apName, const wchar_t* apValue)
+{
+    const int index = sqlite3_bind_parameter_index(mStmtPtr, apName);
+    const int ret = sqlite3_bind_text16(mStmtPtr, index, apValue, -1, SQLITE_TRANSIENT);
+    check(ret);
+}
+
 // Bind a binary blob value to a parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
 void Statement::bind(const char* apName, const void* apValue, const int aSize)
 {
@@ -234,6 +282,23 @@ void Statement::bindNoCopy(const char* apName, const char* apValue)
 {
     const int index = sqlite3_bind_parameter_index(mStmtPtr, apName);
     const int ret = sqlite3_bind_text(mStmtPtr, index, apValue, -1, SQLITE_STATIC);
+    check(ret);
+}
+
+// Bind a string value to a parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bindNoCopy(const char* apName, const std::wstring& aValue)
+{
+    const int index = sqlite3_bind_parameter_index(mStmtPtr, apName);
+    const int ret = sqlite3_bind_text16(mStmtPtr, index, aValue.c_str(),
+        static_cast<int>(aValue.size() * sizeof(wchar_t)), SQLITE_STATIC);
+    check(ret);
+}
+
+// Bind a text value to a parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+void Statement::bindNoCopy(const char* apName, const wchar_t* apValue)
+{
+    const int index = sqlite3_bind_parameter_index(mStmtPtr, apName);
+    const int ret = sqlite3_bind_text16(mStmtPtr, index, apValue, -1, SQLITE_STATIC);
     check(ret);
 }
 

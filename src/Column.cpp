@@ -96,7 +96,7 @@ std::string Column::getString() const
     // - no need for sqlite3_column_text to add a \0 on the end, as we're getting the bytes length directly
     const char *data = static_cast<const char *>(sqlite3_column_blob(mStmtPtr, mIndex));
 
-    // SQLite docs: "The safest policy is to invoke… sqlite3_column_blob() followed by sqlite3_column_bytes()"
+    // SQLite docs: "The safest policy is to invoke sqlite3_column_blob() followed by sqlite3_column_bytes()"
     // Note: std::string is ok to pass nullptr as first arg, if length is 0
     return std::string(data, sqlite3_column_bytes(mStmtPtr, mIndex));
 }
