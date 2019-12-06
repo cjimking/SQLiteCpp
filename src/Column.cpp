@@ -83,6 +83,13 @@ const char* Column::getText(const char* apDefaultValue /* = "" */) const noexcep
     return (pText?pText:apDefaultValue);
 }
 
+// Return a pointer to the text value (NULL terminated wstring) of the column specified by its index starting at 0
+const wchar_t* Column::getTextW(const wchar_t* apDefaultValue /* = L"" */) const noexcept // nothrow
+{
+    const wchar_t* pText = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(mStmtPtr, mIndex));
+    return (pText ? pText : apDefaultValue);
+}
+
 // Return a pointer to the blob value (*not* NULL terminated) of the column specified by its index starting at 0
 const void* Column::getBlob() const noexcept // nothrow
 {
@@ -99,6 +106,18 @@ std::string Column::getString() const
     // SQLite docs: "The safest policy is to invoke sqlite3_column_blob() followed by sqlite3_column_bytes()"
     // Note: std::string is ok to pass nullptr as first arg, if length is 0
     return std::string(data, sqlite3_column_bytes(mStmtPtr, mIndex));
+}
+
+// Return a std::wstring to a TEXT or BLOB column
+std::wstring Column::getStringW() const
+{
+    // Note: using sqlite3_column_blob and not sqlite3_column_text
+    // - no need for sqlite3_column_text to add a \0 on the end, as we're getting the bytes length directly
+    const wchar_t *data = static_cast<const wchar_t *>(sqlite3_column_blob(mStmtPtr, mIndex));
+
+    // SQLite docs: "The safest policy is to invoke sqlite3_column_blob() followed by sqlite3_column_bytes()"
+    // Note: std::string is ok to pass nullptr as first arg, if length is 0
+    return std::wstring(data, sqlite3_column_bytes(mStmtPtr, mIndex));
 }
 
 // Return the type of the value of the column

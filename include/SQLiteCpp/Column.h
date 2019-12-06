@@ -100,6 +100,13 @@ public:
      */
     const char* getText(const char* apDefaultValue = "") const noexcept; // nothrow
     /**
+     * @brief Return a pointer to the text value (NULL terminated string) of the column.
+     *
+     * @warning The value pointed at is only valid while the statement is valid (ie. not finalized),
+     *          thus you must copy it before using it beyond its scope (to a std::wstring for instance).
+     */
+    const wchar_t* getTextW(const wchar_t* apDefaultValue = L"") const noexcept; // nothrow
+    /**
      * @brief Return a pointer to the binary blob value of the column.
      *
      * @warning The value pointed at is only valid while the statement is valid (ie. not finalized),
@@ -112,7 +119,12 @@ public:
      * Note this correctly handles strings that contain null bytes.
      */
     std::string getString() const;
-
+    /**
+     * @brief Return a std::wstring for a TEXT or BLOB column.
+     *
+     * Note this correctly handles strings that contain null bytes.
+     */
+    std::wstring getStringW() const;
     /**
      * @brief Return the type of the value of the column
      *
@@ -234,6 +246,15 @@ public:
     inline operator const char*() const
     {
         return getText();
+    }
+    /**
+     * @brief Inline cast operator to char*
+     *
+     * @see getText
+     */
+    inline operator const wchar_t*() const
+    {
+        return getTextW();
     }
     /**
      * @brief Inline cast operator to void*
